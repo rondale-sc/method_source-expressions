@@ -13,7 +13,10 @@ describe MethodSource::Expressions::ProcExtensions do
 
   describe "#expressions" do
     it "returns a hash with values of expression objects" do
-      result = blk.expressions.all? {|v| v.class == MethodSource::Expressions::Expression }
+      result = blk.expressions.all? do |v|
+        v.class == MethodSource::Expressions::Expression ||
+        v.class == MethodSource::Expressions::ExpressionCollection
+      end
       expect(result).to be_true
     end
 
