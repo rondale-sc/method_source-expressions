@@ -1,13 +1,18 @@
 module MethodSource::Expressions
   module ProcExtensions
     def expressions
-      source_range.each_with_object({}) do |line_number, expressions|
-        expression = create_expression(line_number)
-        expressions[expression.range] = expression if expression.source
-      end
+      ec = MethodSource::Expressions::ExpressionCollection.new(collection)
+      ec.direct_descendents
     end
 
     private
+
+    def collection
+      source_range.map do |line_number|
+        expression = create_expression(line_number)
+        expression if expression.source
+     end.compact
+    end
 
     def source_range
       starting_line..(starting_line + length)

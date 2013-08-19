@@ -12,6 +12,11 @@ module MethodSource::Expressions
       is_multi_line? ? multi_line_expression_range : line_number..line_number
     end
 
+    def within(other_expression)
+      range.all? {|i| other_expression.range.include?(i) } &&
+      range != other_expression.range
+    end
+
     private
 
     def line_number
